@@ -1,0 +1,93 @@
+## .NET build output
+[Bb]in/
+[Oo]bj/
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]inaries/
+out/
+artifacts/
+
+## .NET generated files
+*.user
+*.userosscache
+*.sln.docstates
+*.aps
+*.nupkg
+*.snupkg
+*.dll
+*.exe
+*.pdb
+*.cache
+*.generated.cs
+project.assets.json
+*.ncrunch*
+*_i.c
+*_p.c
+*_h.h
+*.ilk
+*.meta
+*.obj
+*.sparkvsp
+*.dSYM
+
+## Test results
+[Tt]est[Rr]esult*/
+[Tt]est[Rr]esults/
+*.trx
+*.coverage
+*.coveragexml
+
+## MSBuild
+**/[Tt]est[Rr]esult/[Pp]ublish*/
+*.iis
+*.iislog
+*.publishsettings
+!**/web.config
+*.temp
+
+## Rider / Visual Studio
+.vs/
+.vsconfig
+*.suo
+*.user
+.vs/**:checkout
+
+## Visual Studio Code / JetBrains
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.idea/
+*.sln.iml
+
+## Core generated
+TestResults/
+.vs/
+.vscode/.cache/
+.vscode/.mock/
+*.vshost.*
+*.vsp
+*.vspx
+*.sap
+*.binarylog
+.VS/
+*.console
+
+## Misc
+.DS_Store
+*.log
+logs/
+temp/
+tmp/
+*.pid
+*.seed
+*.pid.lock
+.env
+.env.local
+.env.*.local
