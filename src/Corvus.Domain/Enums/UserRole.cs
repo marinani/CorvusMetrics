@@ -3,5 +3,7 @@ namespace Corvus.Domain.Enums;
 public enum UserRole
 {
     Member,
-    Admin
+    Admin,
+    Manager,
+    Seller,
 }

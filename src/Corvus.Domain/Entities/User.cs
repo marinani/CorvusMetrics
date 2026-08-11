@@ -48,8 +48,6 @@ public sealed class User : BaseEntity, IAggregateRoot
 
     public UserRole Role { get; private set; }
 
-    public bool IsActive { get; private set; } = true;
-
     public void UpdateProfile(string firstName, string lastName)
     {
         FirstName = firstName;
@@ -57,15 +55,27 @@ public sealed class User : BaseEntity, IAggregateRoot
         UpdatedAtUtc = DateTime.UtcNow;
     }
 
-    public void ChangePassword(string passwordHash)
+    public void Update(string firstName, string lastName, UserRole role)
     {
-        PasswordHash = passwordHash;
+        if (string.IsNullOrWhiteSpace(firstName))
+        {
+            throw new ArgumentException("First name must not be null or whitespace.", nameof(firstName));
+        }
+
+        if (string.IsNullOrWhiteSpace(lastName))
+        {
+            throw new ArgumentException("Last name must not be null or whitespace.", nameof(lastName));
+        }
+
+        FirstName = firstName;
+        LastName = lastName;
+        Role = role;
         UpdatedAtUtc = DateTime.UtcNow;
     }
 
-    public void Deactivate()
+    public void ChangePassword(string passwordHash)
     {
-        IsActive = false;
+        PasswordHash = passwordHash;
         UpdatedAtUtc = DateTime.UtcNow;
     }
 }

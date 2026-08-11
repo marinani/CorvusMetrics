@@ -29,7 +29,6 @@ public static class DependencyInjection
         services.AddScoped<IUnitOfWork>(
             serviceProvider => serviceProvider.GetRequiredService<CorvusDbContext>());
 
-        services.AddScoped<IMetricRepository, MetricRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
 
         services.AddScoped<IPasswordHasher, PasswordHasher>();

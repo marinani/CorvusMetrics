@@ -12,9 +12,9 @@ public sealed class CorvusDbContext : DbContext, IUnitOfWork
     {
     }
 
-    public DbSet<Metric> Metrics => Set<Metric>();
-
     public DbSet<User> Users => Set<User>();
+
+    public DbSet<Tenant> Tenants => Set<Tenant>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

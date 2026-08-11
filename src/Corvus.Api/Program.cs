@@ -5,7 +5,10 @@ using Corvus.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+        options.JsonSerializerOptions.Converters.Add(
+            new System.Text.Json.Serialization.JsonStringEnumConverter()));
 
 builder.Services.AddSwaggerWithJwt();
 
@@ -15,14 +18,13 @@ builder.Services.AddJwtAuthentication(builder.Configuration);
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI(options =>
-        options.SwaggerEndpoint("/swagger/v1/swagger.json", "Corvus API v1"));
-}
-
 app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
+
+app.UseSwagger();
+app.UseSwaggerUI(options =>
+    options.SwaggerEndpoint("/swagger/v1/swagger.json", "Corvus Metrics API v1"));
+
+app.MapGet("/", () => Results.Redirect("/swagger"));
 
 app.UseHttpsRedirection();
 
