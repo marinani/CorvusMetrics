@@ -36,7 +36,11 @@ public sealed class GetUsersQueryHandler
                 user.FirstName,
                 user.LastName,
                 user.Email,
-                user.Role.ToString(), user.IsActive))
+                user.Role.ToString(),
+                user.IsActive,
+                user.CreatedAtUtc,
+                user.UpdatedAtUtc)
+            )
             .ToList();
 
         var result = new PagedResult<UserDto>(dtos, pageNumber, pageSize, paged.TotalCount);

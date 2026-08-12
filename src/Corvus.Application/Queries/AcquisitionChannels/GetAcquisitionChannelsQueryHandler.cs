@@ -35,7 +35,9 @@ public sealed class GetAcquisitionChannelsQueryHandler
                 channel.Id,
                 channel.Name,
                 channel.Color,
-                channel.IsActive))
+                channel.IsActive,
+                channel.CreatedAtUtc,
+                channel.UpdatedAtUtc))
             .ToList();
 
         var result = new PagedResult<AcquisitionChannelDto>(dtos, pageNumber, pageSize, paged.TotalCount);

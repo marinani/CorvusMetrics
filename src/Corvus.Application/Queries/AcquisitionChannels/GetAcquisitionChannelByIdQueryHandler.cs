@@ -31,7 +31,9 @@ public sealed class GetAcquisitionChannelByIdQueryHandler
             channel.Id,
             channel.Name,
             channel.Color,
-            channel.IsActive);
+            channel.IsActive,
+            channel.CreatedAtUtc,
+            channel.UpdatedAtUtc);
 
         return Result<AcquisitionChannelDto>.Success(dto);
     }

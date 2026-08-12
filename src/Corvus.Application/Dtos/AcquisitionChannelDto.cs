@@ -4,4 +4,6 @@ public sealed record AcquisitionChannelDto(
     Guid Id,
     string Name,
     string Color,
-    bool IsActive);
+    bool IsActive,
+    DateTime CreatedAtUtc,
+    DateTime? UpdatedAtUtc);

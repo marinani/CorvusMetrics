@@ -6,4 +6,6 @@ public sealed record UserDto(
     string LastName,
     string Email,
     string Role,
-    bool IsActive);
+    bool IsActive,
+     DateTime CreatedAtUtc,
+    DateTime? UpdatedAtUtc);
