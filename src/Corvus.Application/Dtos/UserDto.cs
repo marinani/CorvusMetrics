@@ -5,4 +5,5 @@ public sealed record UserDto(
     string FirstName,
     string LastName,
     string Email,
-    string Role);
+    string Role,
+    bool IsActive);

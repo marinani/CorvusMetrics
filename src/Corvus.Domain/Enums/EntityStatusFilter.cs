@@ -1,6 +1,6 @@
 namespace Corvus.Domain.Enums;
 
-public enum UserStatusFilter
+public enum EntityStatusFilter
 {
     All,
     Active,

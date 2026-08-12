@@ -1,5 +1,5 @@
-using Corvus.Application.Commands.Users;
-using Corvus.Application.Queries.Users;
+using Corvus.Application.Commands.AcquisitionChannels;
+using Corvus.Application.Queries.AcquisitionChannels;
 using Corvus.Domain.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -9,12 +9,12 @@ namespace Corvus.Api.Controllers;
 
 [Authorize]
 [ApiController]
-[Route("api/users")]
-public sealed class UsersController : ControllerBase
+[Route("api/acquisition-channels")]
+public sealed class AcquisitionChannelsController : ControllerBase
 {
     private readonly ISender _sender;
 
-    public UsersController(ISender sender)
+    public AcquisitionChannelsController(ISender sender)
     {
         _sender = sender;
     }
@@ -23,13 +23,13 @@ public sealed class UsersController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Create(
-        CreateUserCommand command,
+        CreateAcquisitionChannelCommand command,
         CancellationToken cancellationToken)
     {
         var result = await _sender.Send(command, cancellationToken);
 
         return result.IsSuccess
-            ? Ok(new { userId = result.Value })
+            ? Ok(new { acquisitionChannelId = result.Value })
             : BadRequest(new { result.Error!.Code, result.Error.Message });
     }
 
@@ -38,13 +38,11 @@ public sealed class UsersController : ControllerBase
     public async Task<IActionResult> GetPaged(
         [FromQuery] int pageNumber = 1,
         [FromQuery] int pageSize = 10,
-        [FromQuery] string? firstName = null,
-        [FromQuery] string? lastName = null,
-        [FromQuery] UserRole? role = null,
+        [FromQuery] string? name = null,
         [FromQuery] EntityStatusFilter status = EntityStatusFilter.All,
         CancellationToken cancellationToken = default)
     {
-        var result = await _sender.Send(new GetUsersQuery(pageNumber, pageSize, firstName, lastName, role, status), cancellationToken);
+        var result = await _sender.Send(new GetAcquisitionChannelsQuery(pageNumber, pageSize, name, status), cancellationToken);
 
         return Ok(result.Value);
     }
@@ -54,7 +52,7 @@ public sealed class UsersController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetById(Guid id, CancellationToken cancellationToken)
     {
-        var result = await _sender.Send(new GetUserByIdQuery(id), cancellationToken);
+        var result = await _sender.Send(new GetAcquisitionChannelByIdQuery(id), cancellationToken);
 
         return result.IsSuccess
             ? Ok(result.Value)
@@ -66,7 +64,7 @@ public sealed class UsersController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Update(
         Guid id,
-        [FromBody] UpdateUserCommand command,
+        [FromBody] UpdateAcquisitionChannelCommand command,
         CancellationToken cancellationToken)
     {
         var result = await _sender.Send(command with { Id = id }, cancellationToken);
@@ -81,7 +79,7 @@ public sealed class UsersController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Delete(Guid id, CancellationToken cancellationToken)
     {
-        var result = await _sender.Send(new DeleteUserCommand(id), cancellationToken);
+        var result = await _sender.Send(new DeleteAcquisitionChannelCommand(id), cancellationToken);
 
         return result.IsSuccess
             ? Ok()

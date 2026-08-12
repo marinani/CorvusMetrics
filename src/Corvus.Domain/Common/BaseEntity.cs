@@ -8,7 +8,7 @@ public abstract class BaseEntity
 
     public DateTime? UpdatedAtUtc { get; protected set; }
 
-    public bool IsActive { get; private set; } = true;
+    public bool IsActive { get; protected set; } = true;
 
     private readonly List<IDomainEvent> _domainEvents = new();
 

@@ -30,7 +30,8 @@ public sealed class GetUserByIdQueryHandler
             user.FirstName,
             user.LastName,
             user.Email,
-            user.Role.ToString());
+            user.Role.ToString(),
+            user.IsActive);
 
         return Result<UserDto>.Success(dto);
     }

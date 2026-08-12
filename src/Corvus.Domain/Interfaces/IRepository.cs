@@ -1,3 +1,6 @@
+using System.Linq.Expressions;
+using Corvus.Domain.Common;
+
 namespace Corvus.Domain.Interfaces;
 
 public interface IRepository<TEntity> where TEntity : class
@@ -9,4 +12,10 @@ public interface IRepository<TEntity> where TEntity : class
     void Update(TEntity entity);
 
     void Remove(TEntity entity);
+
+    Task<PagedResult<TEntity>> GetPagedAsync(
+        int pageNumber,
+        int pageSize,
+        Expression<Func<TEntity, bool>>? predicate = null,
+        CancellationToken cancellationToken = default);
 }

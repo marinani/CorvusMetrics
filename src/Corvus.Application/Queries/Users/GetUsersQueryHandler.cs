@@ -1,5 +1,6 @@
 using Corvus.Application.Common.Results;
 using Corvus.Application.Dtos;
+using Corvus.Domain.Common;
 using Corvus.Domain.Interfaces;
 using MediatR;
 
@@ -20,7 +21,7 @@ public sealed class GetUsersQueryHandler
         var pageNumber = request.PageNumber <= 0 ? 1 : request.PageNumber;
         var pageSize = request.PageSize <= 0 ? 10 : request.PageSize;
 
-        var (items, totalCount) = await _userRepository.GetPagedAsync(
+        var paged = await _userRepository.GetPagedAsync(
             pageNumber,
             pageSize,
             request.FirstName,
@@ -29,7 +30,7 @@ public sealed class GetUsersQueryHandler
             request.Status,
             cancellationToken);
 
-        var dtos = items
+        var dtos = paged.Items
             .Select(user => new UserDto(
                 user.Id,
                 user.FirstName,
@@ -38,7 +39,7 @@ public sealed class GetUsersQueryHandler
                 user.Role.ToString()))
             .ToList();
 
-        var result = new PagedResult<UserDto>(dtos, pageNumber, pageSize, totalCount);
+        var result = new PagedResult<UserDto>(dtos, pageNumber, pageSize, paged.TotalCount);
 
         return Result<PagedResult<UserDto>>.Success(result);
     }

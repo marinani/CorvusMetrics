@@ -1,5 +1,6 @@
 using Corvus.Application.Common.Results;
 using Corvus.Application.Dtos;
+using Corvus.Domain.Common;
 using Corvus.Domain.Enums;
 using MediatR;
 
@@ -11,4 +12,4 @@ public sealed record GetUsersQuery(
     string? FirstName = null,
     string? LastName = null,
     UserRole? Role = null,
-    UserStatusFilter Status = UserStatusFilter.All) : IRequest<Result<PagedResult<UserDto>>>;
+    EntityStatusFilter Status = EntityStatusFilter.All) : IRequest<Result<PagedResult<UserDto>>>;

@@ -1,4 +1,4 @@
-namespace Corvus.Application.Common.Results;
+namespace Corvus.Domain.Common;
 
 public sealed record PagedResult<T>(
     IReadOnlyList<T> Items,
@@ -7,4 +7,8 @@ public sealed record PagedResult<T>(
     int TotalCount)
 {
     public int TotalPages => PageSize == 0 ? 0 : (int)Math.Ceiling(TotalCount / (double)PageSize);
+
+    public bool HasNextPage => PageNumber < TotalPages;
+
+    public bool HasPreviousPage => PageNumber > 1;
 }

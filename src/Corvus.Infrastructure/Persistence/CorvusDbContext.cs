@@ -16,6 +16,8 @@ public sealed class CorvusDbContext : DbContext, IUnitOfWork
 
     public DbSet<Tenant> Tenants => Set<Tenant>();
 
+    public DbSet<AcquisitionChannel> AcquisitionChannels => Set<AcquisitionChannel>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(CorvusDbContext).Assembly);

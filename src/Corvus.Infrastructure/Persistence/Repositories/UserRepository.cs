@@ -1,3 +1,4 @@
+using Corvus.Domain.Common;
 using Corvus.Domain.Entities;
 using Corvus.Domain.Enums;
 using Corvus.Domain.Interfaces;
@@ -5,37 +6,31 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Corvus.Infrastructure.Persistence.Repositories;
 
-public sealed class UserRepository : IUserRepository
+public sealed class UserRepository : RepositoryBase<User>, IUserRepository
 {
-    private readonly CorvusDbContext _dbContext;
-
     public UserRepository(CorvusDbContext dbContext)
+        : base(dbContext)
     {
-        _dbContext = dbContext;
     }
 
-    public async Task<User?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
-        => await _dbContext.Users
-            .FirstOrDefaultAsync(user => user.Id == id, cancellationToken);
-
     public async Task<User?> GetByEmailAsync(string email, CancellationToken cancellationToken = default)
-        => await _dbContext.Users
+        => await DbContext.Users
             .FirstOrDefaultAsync(user => user.Email == email, cancellationToken);
 
     public async Task<bool> ExistsByEmailAsync(string email, CancellationToken cancellationToken = default)
-        => await _dbContext.Users
+        => await DbContext.Users
             .AnyAsync(user => user.Email == email, cancellationToken);
 
-    public async Task<(IReadOnlyList<User> Items, int TotalCount)> GetPagedAsync(
+    public async Task<PagedResult<User>> GetPagedAsync(
         int pageNumber,
         int pageSize,
         string? firstName,
         string? lastName,
         UserRole? role,
-        UserStatusFilter status,
+        EntityStatusFilter status,
         CancellationToken cancellationToken = default)
     {
-        var query = _dbContext.Users.AsNoTracking();
+        var query = DbContext.Users.AsNoTracking();
 
         if (!string.IsNullOrWhiteSpace(firstName))
         {
@@ -52,28 +47,16 @@ public sealed class UserRepository : IUserRepository
             query = query.Where(user => user.Role == role);
         }
 
-        query = status switch
-        {
-            UserStatusFilter.Active => query.Where(user => user.IsActive),
-            UserStatusFilter.Inactive => query.Where(user => !user.IsActive),
-            _ => query
-        };
+        query = ApplyStatusFilter(query, status);
 
-        var totalCount = await query.CountAsync(cancellationToken);
-
-        var items = await query
-            .OrderByDescending(user => user.CreatedAtUtc)
-            .Skip((pageNumber - 1) * pageSize)
-            .Take(pageSize)
-            .ToListAsync(cancellationToken);
-
-        return (items, totalCount);
+        return await ApplyPaginationAsync(query, pageNumber, pageSize, cancellationToken);
     }
 
-    public async Task AddAsync(User entity, CancellationToken cancellationToken = default)
-        => await _dbContext.Users.AddAsync(entity, cancellationToken);
-
-    public void Update(User entity) => _dbContext.Users.Update(entity);
-
-    public void Remove(User entity) => _dbContext.Users.Remove(entity);
+    private static IQueryable<User> ApplyStatusFilter(IQueryable<User> query, EntityStatusFilter status)
+        => status switch
+        {
+            EntityStatusFilter.Active => query.Where(user => user.IsActive),
+            EntityStatusFilter.Inactive => query.Where(user => !user.IsActive),
+            _ => query
+        };
 }

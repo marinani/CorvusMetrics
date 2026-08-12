@@ -4,18 +4,16 @@ using Corvus.Domain.Enums;
 
 namespace Corvus.Domain.Interfaces;
 
-public interface IUserRepository : IRepository<User>
+public interface ITenantRepository : IRepository<Tenant>
 {
-    Task<User?> GetByEmailAsync(string email, CancellationToken cancellationToken = default);
+    Task<Tenant?> GetByEmailAsync(string email, CancellationToken cancellationToken = default);
 
     Task<bool> ExistsByEmailAsync(string email, CancellationToken cancellationToken = default);
 
-    Task<PagedResult<User>> GetPagedAsync(
+    Task<PagedResult<Tenant>> GetPagedAsync(
         int pageNumber,
         int pageSize,
-        string? firstName,
-        string? lastName,
-        UserRole? role,
+        string? name,
         EntityStatusFilter status,
         CancellationToken cancellationToken = default);
 }

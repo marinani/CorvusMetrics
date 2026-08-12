@@ -30,6 +30,8 @@ public static class DependencyInjection
             serviceProvider => serviceProvider.GetRequiredService<CorvusDbContext>());
 
         services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<ITenantRepository, TenantRepository>();
+        services.AddScoped<IAcquisitionChannelRepository, AcquisitionChannelRepository>();
 
         services.AddScoped<IPasswordHasher, PasswordHasher>();
         services.AddScoped<ITokenService, TokenService>();
