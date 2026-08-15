@@ -33,7 +33,8 @@ public sealed class GetUserByIdQueryHandler
             user.Role.ToString(),
             user.IsActive,
             user.CreatedAtUtc,
-            user.UpdatedAtUtc);
+            user.UpdatedAtUtc,
+            string.Join(", ", user.UserTenants.Select(ut => ut.Tenant.Name)));
 
         return Result<UserDto>.Success(dto);
     }

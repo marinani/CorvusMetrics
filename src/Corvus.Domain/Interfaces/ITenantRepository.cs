@@ -10,6 +10,10 @@ public interface ITenantRepository : IRepository<Tenant>
 
     Task<bool> ExistsByEmailAsync(string email, CancellationToken cancellationToken = default);
 
+    Task<bool> ExistsByIdAsync(Guid id, CancellationToken cancellationToken = default);
+
+    Task<IReadOnlyList<Tenant>> GetActiveAsync(CancellationToken cancellationToken = default);
+
     Task<PagedResult<Tenant>> GetPagedAsync(
         int pageNumber,
         int pageSize,

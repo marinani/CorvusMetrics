@@ -39,7 +39,8 @@ public sealed class GetUsersQueryHandler
                 user.Role.ToString(),
                 user.IsActive,
                 user.CreatedAtUtc,
-                user.UpdatedAtUtc)
+                user.UpdatedAtUtc,
+                string.Join(", ", user.UserTenants.Select(ut => ut.Tenant.Name)))
             )
             .ToList();
 

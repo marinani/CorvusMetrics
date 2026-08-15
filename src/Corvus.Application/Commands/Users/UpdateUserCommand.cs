@@ -8,4 +8,5 @@ public sealed record UpdateUserCommand(
     Guid Id,
     string FirstName,
     string LastName,
-    UserRole Role) : IRequest<Result>;
+    UserRole Role,
+    IReadOnlyList<Guid>? TenantIds = null) : IRequest<Result>;

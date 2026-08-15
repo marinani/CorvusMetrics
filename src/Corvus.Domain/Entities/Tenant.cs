@@ -36,6 +36,10 @@ public sealed class Tenant : BaseEntity, IAggregateRoot
 
     public string Email { get; private set; } = null!;
 
+    private readonly List<UserTenant> _userTenants = new();
+
+    public IReadOnlyCollection<UserTenant> UserTenants => _userTenants.AsReadOnly();
+
     public void Update(string name, string cnpj, string email)
     {
         if (string.IsNullOrWhiteSpace(name))

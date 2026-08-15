@@ -13,8 +13,16 @@ public sealed class UserRepository : RepositoryBase<User>, IUserRepository
     {
     }
 
+    public override async Task<User?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+        => await DbContext.Users
+            .Include(user => user.UserTenants)
+            .ThenInclude(userTenant => userTenant.Tenant)
+            .FirstOrDefaultAsync(user => user.Id == id, cancellationToken);
+
     public async Task<User?> GetByEmailAsync(string email, CancellationToken cancellationToken = default)
         => await DbContext.Users
+             .Include(x => x.UserTenants)
+            .ThenInclude(x => x.Tenant)
             .FirstOrDefaultAsync(user => user.Email == email, cancellationToken);
 
     public async Task<bool> ExistsByEmailAsync(string email, CancellationToken cancellationToken = default)
@@ -30,7 +38,10 @@ public sealed class UserRepository : RepositoryBase<User>, IUserRepository
         EntityStatusFilter status,
         CancellationToken cancellationToken = default)
     {
-        var query = DbContext.Users.AsNoTracking();
+        var query = DbContext.Users
+            .Include(x=> x.UserTenants)
+            .ThenInclude(x => x.Tenant)
+            .AsNoTracking();
 
         if (!string.IsNullOrWhiteSpace(firstName))
         {

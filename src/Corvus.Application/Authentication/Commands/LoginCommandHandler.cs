@@ -37,7 +37,8 @@ public sealed class LoginCommandHandler : IRequestHandler<LoginCommand, Result<L
         var response = new LoginResponse(
             token.Token,
             token.ExpiresAtUtc,
-            new UserDto(user.Id, user.FirstName, user.LastName, user.Email, user.Role.ToString(), user.IsActive, user.CreatedAtUtc, user.UpdatedAtUtc));
+            new UserDto(user.Id, user.FirstName, user.LastName, user.Email, user.Role.ToString(), user.IsActive, user.CreatedAtUtc, user.UpdatedAtUtc, 
+            string.Join(", ", user.UserTenants.Select(ut => ut.Tenant.Name))));
 
         return Result<LoginResponse>.Success(response);
     }

@@ -47,6 +47,15 @@ public sealed class TenantsController : ControllerBase
         return Ok(result.Value);
     }
 
+    [HttpGet("active")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetActive(CancellationToken cancellationToken)
+    {
+        var result = await _sender.Send(new GetActiveTenantsQuery(), cancellationToken);
+
+        return Ok(result.Value);
+    }
+
     [HttpGet("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

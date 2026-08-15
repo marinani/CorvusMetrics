@@ -48,6 +48,32 @@ public sealed class User : BaseEntity, IAggregateRoot
 
     public UserRole Role { get; private set; }
 
+    private readonly List<UserTenant> _userTenants = new();
+
+    public IReadOnlyCollection<UserTenant> UserTenants => _userTenants.AsReadOnly();
+
+    public void AddTenant(Guid tenantId)
+    {
+        if (_userTenants.Any(userTenant => userTenant.TenantId == tenantId))
+        {
+            return;
+        }
+
+        _userTenants.Add(new UserTenant(Id, tenantId));
+    }
+
+    public void RemoveTenant(Guid tenantId)
+    {
+        var userTenant = _userTenants.FirstOrDefault(tenant => tenant.TenantId == tenantId);
+
+        if (userTenant is not null)
+        {
+            _userTenants.Remove(userTenant);
+        }
+    }
+
+    public void ClearTenants() => _userTenants.Clear();
+
     public void UpdateProfile(string firstName, string lastName)
     {
         FirstName = firstName;

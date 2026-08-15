@@ -21,6 +21,17 @@ public sealed class TenantRepository : RepositoryBase<Tenant>, ITenantRepository
         => await DbContext.Tenants
             .AnyAsync(tenant => tenant.Email == email, cancellationToken);
 
+    public async Task<bool> ExistsByIdAsync(Guid id, CancellationToken cancellationToken = default)
+        => await DbContext.Tenants
+            .AnyAsync(tenant => tenant.Id == id, cancellationToken);
+
+    public async Task<IReadOnlyList<Tenant>> GetActiveAsync(CancellationToken cancellationToken = default)
+        => await DbContext.Tenants
+            .AsNoTracking()
+            .Where(tenant => tenant.IsActive)
+            .OrderBy(tenant => tenant.Name)
+            .ToListAsync(cancellationToken);
+
     public async Task<PagedResult<Tenant>> GetPagedAsync(
         int pageNumber,
         int pageSize,

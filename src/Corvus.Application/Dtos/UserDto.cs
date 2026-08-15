@@ -8,4 +8,5 @@ public sealed record UserDto(
     string Role,
     bool IsActive,
      DateTime CreatedAtUtc,
-    DateTime? UpdatedAtUtc);
+    DateTime? UpdatedAtUtc,
+    string? TenantStr);

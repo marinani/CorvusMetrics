@@ -9,4 +9,5 @@ public sealed record CreateUserCommand(
     string LastName,
     string Email,
     string Password,
-    UserRole Role) : IRequest<Result<Guid>>;
+    UserRole Role,
+    IReadOnlyList<Guid>? TenantIds = null) : IRequest<Result<Guid>>;
